@@ -2,6 +2,11 @@
 
 import pythonping as pp
 
+from os import environ as env
+
+PING_COUNT = env['PING_COUNT'] if 'PING_COUNT' in env else 30
+TIMEOUT = env['PING_TIMEOUT'] if 'PING_TIMEOUT' in env else 1
+
 class Pinger:
     def ping(self, ip, count=6, timeout=5):
         """

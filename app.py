@@ -56,19 +56,14 @@ class App:
 
     def on_mqtt_connect(self, client, userdata, flags, rc):
         logging.info("Connected to MQTT with result code " + str(rc))
-        
+
         # Subscribe to topics
         command_topics = [('ping/' + ip + '/command', 2) for ip in self.devices]
         self.mqtt_client.subscribe(command_topics)
 
-        # Announce availability
-        for ip in self.devices:
-            self.mqtt_client.publish('ping/' + ip + '/availability', payload='online', retain=False)
-
         # Initial updates
         logging.info('Updating all targets')
-        for ip in self.devices:
-            self.update_ip(ip)
+        self.update_all_ips()
 
 
     def on_mqtt_message(self, client, userdata, msg):
@@ -102,6 +97,7 @@ class App:
         state = self.pinger.ping(ip)
         logging.debug('%s is %s', ip, 'responding' if state else 'timing out')
         self.publish_new_state(ip, state)
+        self.announce_online(ip)
 
 
     def update_all_ips(self):
@@ -113,6 +109,10 @@ class App:
         payload = 'ON' if state else 'OFF'
         topic = 'ping/' + ip 
         self.mqtt_client.publish(topic, payload=payload, retain=False)
+
+
+    def announce_online(self, ip):
+        self.mqtt_client.publish('ping/' + ip + '/availability', payload='online', retain=False)
 
 
     def announce_offline(self):
