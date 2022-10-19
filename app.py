@@ -117,7 +117,7 @@ class App:
 
     def announce_offline(self):
         for ip in self.devices:
-            self.mqtt_client.publish('ping/' + ip + '/availability', payload='offline', retain=True)
+            self.mqtt_client.publish('ping/' + ip + '/availability', payload='offline', retain=False)
    
 
 
