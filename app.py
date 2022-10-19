@@ -110,7 +110,7 @@ class App:
 
 
     def publish_new_state(self, ip, state):
-        payload = 'on' if state else 'off'
+        payload = 'ON' if state else 'OFF'
         topic = 'ping/' + ip 
         self.mqtt_client.publish(topic, payload=payload, retain=False)
 
