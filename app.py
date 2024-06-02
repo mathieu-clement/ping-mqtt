@@ -23,7 +23,7 @@ class App:
     While this documentation refers to IP addresses, a resolvable hostname can be substituted as well.
     """
 
-    def __init__(self, devices, broker, port=1883):
+    def __init__(self, devices, broker, port=1883, user='', password=''):
         """
         Connects to the MQTT broker, which will also trigger it to subscribe to the appropriate topics if successful.
         
@@ -37,6 +37,12 @@ class App:
 
         port : int, optional
             The port number of the broker. 1883 by default. 8883 (TLS) might work but it has not been tested.
+
+        user : string
+            Username to authenticate to MQTT
+
+        password : string
+            Password to authenticate to MQTT
         """
 
         self.devices = devices
@@ -44,6 +50,8 @@ class App:
         self.executor = ThreadPoolExecutor()
 
         self.mqtt_client = mqtt.Client()
+        if user != '' and password != '':
+            self.mqtt_client.username_pw_set(user, password)
         self.mqtt_client.on_connect = self.on_mqtt_connect
         self.mqtt_client.on_message = self.on_mqtt_message
 
@@ -153,7 +161,15 @@ if __name__ == '__main__':
     # than the default (1883).
     broker = os.environ['BROKER']
     
-    app = App(ips, broker)
+    # MQTT_USER environment variable
+    # specifies the username to connect to MQTT broker
+    mqtt_user = os.environ['MQTT_USER']
+    
+    # MQTT_PASSWORD environment variable
+    # specifies the password to connect to MQTT broker
+    mqtt_password = os.environ['MQTT_PASSWORD']
+    
+    app = App(ips, broker, 1883, mqtt_user, mqtt_password)
 
     # POLLING_PERIOD environment variable, in seconds. Disabled by default.
     polling_period = int(os.environ['POLLING_PERIOD'] if 'POLLING_PERIOD' in os.environ else -1)

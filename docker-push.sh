@@ -2,4 +2,4 @@
 
 set -eu
 
-docker push mathieuclement/ping-mqtt:latest
+docker push ghcr.io/mathieuclement/ping-mqtt:latest

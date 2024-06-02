@@ -8,4 +8,4 @@ docker run \
     -e 'LOG_LEVEL=DEBUG' \
     --rm \
     --name ping-mqtt \
-    mathieuclement/ping-mqtt:latest
+    ghcr.io/mathieuclement/ping-mqtt:latest
