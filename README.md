@@ -20,7 +20,7 @@ There are three topics per device:
 
 ## MQTT broker
 
-The broker can be configured through the `BROKER` environment variable, assuming the default
+The broker can be configured through the `BROKER`, `MQTT_USER` and `MQTT_PASSWORD` environment variables, assuming the default
 port 1883. Feel free to submit a PR to support TLS and custom ports.
 
 ## Polling period
